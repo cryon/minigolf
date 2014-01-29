@@ -19,9 +19,8 @@ class LoginBox extends UiBox {
   final FlashBox _flash;
   final ServerProxy _server;
 
-  // transitions
-  var startGameTransition;
-  var switchToRegistrationTransition;
+  Transition startGameTransition;
+  Transition switchToRegistrationTransition;
 
   LoginBox(final ServerProxy server, final PlayerLocalStore playerStore, final FlashBox flash)
       : super('#login-box'),

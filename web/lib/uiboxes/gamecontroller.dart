@@ -23,9 +23,10 @@ class GameController extends UiBox {
 
   Vec2 ballPosition = new Vec2(0, 0);
 
-  // transitions
-  var gameDoneTransition;
-  var logoutTransition;
+  int position = 0;
+
+  Transition gameDoneTransition;
+  Transition logoutTransition;
 
   GameController(final ServerProxy server)
       : server = server,
@@ -39,7 +40,7 @@ class GameController extends UiBox {
       ..onTouchMove.listen(onTouchMove)
       ..onTouchEnd.listen(onTouchEnd);
 
-    logoutButton.onClick.listen(logoutTransition);
+    logoutButton.onClick.listen((_) => logoutTransition());
   }
 
   Vec2 get center => new Vec2(canvas.width / 2, canvas.height / 2);
@@ -190,7 +191,8 @@ class GameController extends UiBox {
 
     server.shoot(force).then((int pos) {
       if(pos != 0) {
-        gameDoneTransition(pos);
+        position = pos;
+        gameDoneTransition();
       }
 
       reset();

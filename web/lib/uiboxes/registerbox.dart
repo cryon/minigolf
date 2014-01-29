@@ -20,9 +20,8 @@ class RegisterBox extends UiBox {
   final FlashBox _flash;
   final ServerProxy _server;
 
-  // transitions
-  var startGameTransition;
-  var switchToLoginTransition;
+  Transition startGameTransition;
+  Transition switchToLoginTransition;
 
   RegisterBox(final ServerProxy server, final PlayerLocalStore playerStore, final FlashBox flash)
       : super('#register-box'),

@@ -10,6 +10,8 @@ import 'communication/serverproxy.dart';
 import 'uiboxes/gamecontroller.dart';
 import 'playerlocalstore.dart';
 
+import 'uiboxes/uibox.dart';
+
 class Application {
   ServerProxy      _server;
   RegisterBox      _registrationBox;
@@ -77,9 +79,9 @@ class Application {
     };
 
     // show score after a game is done
-    _controller.gameDoneTransition = (final int position) {
+    _controller.gameDoneTransition = () {
       _controller.hide();
-      _scoreBox.position = position;
+      _scoreBox.position = _controller.position;
       _scoreBox.show();
     };
 

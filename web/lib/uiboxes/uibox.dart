@@ -2,6 +2,8 @@ library uibox;
 
 import 'dart:html';
 
+typedef void Transition();
+
 abstract class UiBox {
   final DivElement div;
 

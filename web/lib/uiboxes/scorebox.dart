@@ -16,7 +16,7 @@ class ScoreBox extends UiBox {
     _scoreSpan.text = position.toString();
   }
 
-  void set retryTransition(void retryTransition()) {
+  void set retryTransition(final Transition retryTransition) {
     _retryButton.onClick.listen((_) => retryTransition());
   }
 }
