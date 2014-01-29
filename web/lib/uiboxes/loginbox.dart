@@ -10,11 +10,11 @@ import '../communication/player.dart';
 import '../uiboxes/flashbox.dart';
 
 class LoginBox extends UiBox {
-  final FormElement   _loginForm     = querySelector('#login-form');
-  final InputElement  _emailInput    = querySelector('#login-email');
-  final InputElement  _passwordInput = querySelector('#login-password');
-  final ButtonElement _loginButton   = querySelector('#login-submit');
-  final AnchorElement _registerLink  = querySelector('#register-switch');
+  final FormElement   loginForm     = querySelector('#login-form');
+  final InputElement  emailInput    = querySelector('#login-email');
+  final InputElement  passwordInput = querySelector('#login-password');
+  final ButtonElement loginButton   = querySelector('#login-submit');
+  final AnchorElement registerLink  = querySelector('#register-switch');
 
   final FlashBox flash;
   final ServerProxy server;
@@ -25,18 +25,18 @@ class LoginBox extends UiBox {
   LoginBox(final String rootId, ServerProxy this.server, final PlayerLocalStore playerStore, FlashBox this.flash)
       : super(rootId) {
 
-    _registerLink.onClick.listen((event) {
+    registerLink.onClick.listen((event) {
       event.preventDefault();
 
       switchToRegistrationTransition();
     });
 
-    _loginButton.onClick.listen((_) {
-      if(!_loginForm.checkValidity()) {
+    loginButton.onClick.listen((_) {
+      if(!loginForm.checkValidity()) {
         return;
       }
 
-      final Player partialPlayer = new Player(0, '', _emailInput.value, _passwordInput.value);
+      final Player partialPlayer = new Player(0, '', emailInput.value, passwordInput.value);
       server.login(partialPlayer)
         .then((p) {
           // save password

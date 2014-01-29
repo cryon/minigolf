@@ -10,12 +10,12 @@ import '../communication/player.dart';
 import '../uiboxes/flashbox.dart';
 
 class RegisterBox extends UiBox {
-  final FormElement   _registerForm   = querySelector('#register-form');
-  final InputElement  _handleInput    = querySelector('#register-name');
-  final InputElement  _emailInput     = querySelector('#register-email');
-  final InputElement  _passwordInput  = querySelector('#register-password');
-  final ButtonElement _registerButton = querySelector('#register-submit');
-  final AnchorElement _loginLink      = querySelector('#login-switch');
+  final FormElement   registerForm   = querySelector('#register-form');
+  final InputElement  handleInput    = querySelector('#register-name');
+  final InputElement  emailInput     = querySelector('#register-email');
+  final InputElement  passwordInput  = querySelector('#register-password');
+  final ButtonElement registerButton = querySelector('#register-submit');
+  final AnchorElement loginLink      = querySelector('#login-switch');
 
   final FlashBox flash;
   final ServerProxy server;
@@ -26,18 +26,18 @@ class RegisterBox extends UiBox {
   RegisterBox(final String rootId, ServerProxy this.server, final PlayerLocalStore playerStore, FlashBox this.flash)
       : super(rootId) {
 
-    _loginLink.onClick.listen((event) {
+    loginLink.onClick.listen((event) {
       event.preventDefault();
 
       switchToLoginTransition();
     });
 
-    _registerButton.onClick.listen((_) {
-      if(!_registerForm.checkValidity()) {
+    registerButton.onClick.listen((_) {
+      if(!registerForm.checkValidity()) {
         return;
       }
 
-      final Player player = new Player(0, _handleInput.value, _emailInput.value, _passwordInput.value);
+      final Player player = new Player(0, handleInput.value, emailInput.value, passwordInput.value);
       server.registerPlayer(player)
         .then((_){
           playerStore.savePlayerInLocalStorage(player)
