@@ -23,15 +23,12 @@ class Player {
         handle = values[HANDLE_KEY],
         password = values[PASSWORD_KEY];
 
-  Map values() {
-    Map<String, String> values = {
-        ID_KEY       : id,
-        HANDLE_KEY   : handle,
-        EMAIL_KEY    : email,
-        PASSWORD_KEY : password
+  Map<String, String> values() {
+    return {
+      ID_KEY       : id,
+      HANDLE_KEY   : handle,
+      EMAIL_KEY    : email,
+      PASSWORD_KEY : password
     };
-
-    return values;
   }
-
 }
