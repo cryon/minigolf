@@ -9,6 +9,8 @@ import '../vec2.dart';
 import 'player.dart';
 import 'protocolconstants.dart';
 
+typedef void ResponseHandler(final int response, final Map data, final Completer completer);
+
 class ServerProxy {
   final WebSocket socket;
 
@@ -71,7 +73,7 @@ class ServerProxy {
     });
   }
 
-  Future serverMessage(final int message, Map data, void responseHandler(int response, Map data, Completer completer)) {
+  Future serverMessage(final int message, Map data, ResponseHandler responseHandler) {
      if(data == null) {
        data = {};
      }
