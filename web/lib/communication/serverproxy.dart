@@ -14,8 +14,8 @@ class ServerProxy {
 
   ServerProxy(WebSocket this.socket);
 
-  Future<bool> registerPlayer(final Player player) {
-    return _serverMessage(REQUEST_REGISTRATION, player.values(), (int response, Map data, Completer completer) {
+  Future registerPlayer(final Player player) {
+    return serverMessage(REQUEST_REGISTRATION, player.values(), (int response, Map data, Completer completer) {
       switch(response) {
         case REGISTRATION_OK:
           completer.complete(true);
@@ -34,7 +34,7 @@ class ServerProxy {
   }
 
   Future<Player> login(final Player partialPlayer) {
-    return _serverMessage(REQUEST_LOGIN, partialPlayer.values(), (int response, Map data, Completer completer) {
+    return serverMessage(REQUEST_LOGIN, partialPlayer.values(), (int response, Map data, Completer completer) {
       switch(response) {
         case LOGIN_OK:
           completer.complete(new Player.fromValues(data));
@@ -47,7 +47,7 @@ class ServerProxy {
   }
 
   Future<bool> logout() {
-    return _serverMessage(REQUEST_LOGOUT, null, (int response, Map data, Completer completer) {
+    return serverMessage(REQUEST_LOGOUT, null, (int response, Map data, Completer completer) {
       switch(response) {
         case LOGOUT_OK:
           completer.complete(true);
@@ -58,7 +58,7 @@ class ServerProxy {
 
   Future<int> shoot(final Vec2 v) {
 
-    return _serverMessage(SHOOT, v.values, (int response, Map data, Completer completer) {
+    return serverMessage(SHOOT, v.values, (int response, Map data, Completer completer) {
       switch(response) {
         case SHOOT_DONE:
           completer.complete(0);
@@ -71,12 +71,12 @@ class ServerProxy {
     });
   }
 
-  Future _serverMessage(final int message, Map data, void responseHandler(int response, Map data, Completer completer)) {
+  Future serverMessage(final int message, Map data, void responseHandler(int response, Map data, Completer completer)) {
      if(data == null) {
        data = {};
      }
 
-     _sendServerMessage(message, data);
+     sendServerMessage(message, data);
      final Completer completer = new Completer();
      final StreamSubscription subscription = socket.onMessage.listen(null);
 
@@ -98,7 +98,7 @@ class ServerProxy {
      return completer.future;
   }
 
-  String _sendServerMessage(final int message, Map values) {
+  String sendServerMessage(final int message, Map values) {
     var messageMap = {
         'm' : message,
         'd' : values

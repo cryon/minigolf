@@ -30,9 +30,7 @@ class FlashBox extends UiBox {
     animation.apply(div, duration: 1000, delay: 1000);
   }
 
-  void onClick() {
-    hide();
-  }
+  void onClick() => hide();
 
   void onWindowResize() {
     final num newLeft = (window.innerWidth / 2) - (div.clientWidth / 2);

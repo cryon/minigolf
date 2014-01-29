@@ -6,14 +6,14 @@ import 'uibox.dart';
 
 class ScoreBox extends UiBox {
 
-  final SpanElement scoreSpan = querySelector('#score-position');
+  final SpanElement _scoreSpan = querySelector('#score-position');
   final ButtonElement retryButton = querySelector('#replay-button');
 
   ScoreBox(final String rootId)
       : super(rootId);
 
   void set position(final int position) {
-    scoreSpan.text = position.toString();
+    _scoreSpan.text = position.toString();
   }
 
   void set retryTransition(final Transition retryTransition) {

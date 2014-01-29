@@ -13,24 +13,19 @@ class PlayerLocalStore {
 
   static const String PLAYER_KEY = 'player';
 
-  final Store<String> _store = new Store(DB_NAME, STORE_NAME);
+  final Store<String> store = new Store(DB_NAME, STORE_NAME);
 
-  Future savePlayerInLocalStorage(final Player player) {
-    return _store.save(JSON.encode(player.values()), PLAYER_KEY);
-  }
+  Future savePlayerInLocalStorage(final Player player) => store.save(JSON.encode(player.values()), PLAYER_KEY);
 
   Future<Player> getPlayerFromLocalStorage() {
-    return _store.open()
-      .then((_) => _store.getByKey(PLAYER_KEY))
+    return store.open()
+      .then((_) => store.getByKey(PLAYER_KEY))
       .then((playerJson) => new Player.fromValues(JSON.decode(playerJson)))
-      .catchError((_)    => _store.nuke()
+      .catchError((_)    => store.nuke()
         .then((_)       => null)
         .catchError((_) => null));
   }
 
-  Future nuke() {
-    return _store.open()
-      .then((_) => _store.nuke());
-  }
+  Future nuke() => store.open().then((_) => store.nuke());
 }
 

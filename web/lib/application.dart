@@ -94,7 +94,10 @@ class Application {
     // let a player logout
    controller.logoutTransition = () {
       controller.hide();
-      playerStore.nuke().then((_) => loginBox.show());
+
+      playerStore.nuke().then((_) =>
+        server.logout().then((_) =>
+          loginBox.show()));
     };
   }
 }
