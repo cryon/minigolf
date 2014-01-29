@@ -7,8 +7,8 @@ import 'package:css_animation/css_animation.dart';
 import 'uibox.dart';
 
 class FlashBox extends UiBox {
-  FlashBox()
-      : super('#flash');
+  FlashBox(final String rootId)
+      : super(rootId);
 
   void info(final String text) {
     div.text = text;

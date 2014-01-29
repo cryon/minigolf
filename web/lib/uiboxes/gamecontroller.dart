@@ -28,9 +28,9 @@ class GameController extends UiBox {
   Transition gameDoneTransition;
   Transition logoutTransition;
 
-  GameController(ServerProxy this.server)
+  GameController(final String rootId, ServerProxy this.server)
       : canvas = querySelector('#controller-canvas'),
-        super('#controller-box') {
+        super(rootId) {
 
     context = canvas.context2D;
 

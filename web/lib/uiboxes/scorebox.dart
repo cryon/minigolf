@@ -9,8 +9,8 @@ class ScoreBox extends UiBox {
   final SpanElement _scoreSpan = querySelector('#score-position');
   final ButtonElement _retryButton = querySelector('#replay-button');
 
-  ScoreBox()
-      : super('#score-box');
+  ScoreBox(final String rootId)
+      : super(rootId);
 
   void set position(final int position) {
     _scoreSpan.text = position.toString();

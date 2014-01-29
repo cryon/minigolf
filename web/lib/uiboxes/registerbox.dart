@@ -23,8 +23,8 @@ class RegisterBox extends UiBox {
   Transition startGameTransition;
   Transition switchToLoginTransition;
 
-  RegisterBox(ServerProxy this.server, final PlayerLocalStore playerStore, FlashBox this.flash)
-      : super('#register-box') {
+  RegisterBox(final String rootId, ServerProxy this.server, final PlayerLocalStore playerStore, FlashBox this.flash)
+      : super(rootId) {
 
     _loginLink.onClick.listen((event) {
       event.preventDefault();

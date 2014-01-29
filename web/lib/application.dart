@@ -13,20 +13,20 @@ import 'playerlocalstore.dart';
 import 'uiboxes/uibox.dart';
 
 class Application {
-  ServerProxy      _server;
+  ServerProxy      server;
   RegisterBox      _registrationBox;
   LoginBox         _loginBox;
   GameController   _controller;
 
   PlayerLocalStore _playerStore = new PlayerLocalStore();
-  FlashBox         _flash = new FlashBox();
-  ScoreBox         _scoreBox = new ScoreBox();
+  FlashBox         flash = new FlashBox('#flash');
+  ScoreBox         _scoreBox = new ScoreBox('#score-box');
 
   Application(final WebSocket socket) {
-    _server          = new ServerProxy(socket);
-    _registrationBox = new RegisterBox(_server, _playerStore, _flash);
-    _loginBox        = new LoginBox(_server, _playerStore, _flash);
-    _controller      = new GameController(_server);
+    server          = new ServerProxy(socket);
+    _registrationBox = new RegisterBox('#register-box', server, _playerStore, flash);
+    _loginBox        = new LoginBox('#login-box', server, _playerStore, flash);
+    _controller      = new GameController('#controller-box', server);
   }
 
   void start() {
@@ -36,13 +36,13 @@ class Application {
     _playerStore.getPlayerFromLocalStorage()
       .then((player) {
         if(player != null) {
-          _server.login(player)
+          server.login(player)
             .then((_) {
-              _flash.info('Välkommen tillbaka ${player.handle}!');
+              flash.info('Välkommen tillbaka ${player.handle}!');
               _controller.show();
             })
             .catchError((e) {
-              _flash.error("Försökte logga in med informationen sparad i din enhet. Misslyckades!");
+              flash.error("Försökte logga in med informationen sparad i din enhet. Misslyckades!");
 
               // if the stored information is faulty somehow, purge the local store
               _playerStore.nuke().then((_) => _registrationBox.show());

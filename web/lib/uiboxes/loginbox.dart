@@ -22,8 +22,8 @@ class LoginBox extends UiBox {
   Transition startGameTransition;
   Transition switchToRegistrationTransition;
 
-  LoginBox(ServerProxy this.server, final PlayerLocalStore playerStore, FlashBox this.flash)
-      : super('#login-box') {
+  LoginBox(final String rootId, ServerProxy this.server, final PlayerLocalStore playerStore, FlashBox this.flash)
+      : super(rootId) {
 
     _registerLink.onClick.listen((event) {
       event.preventDefault();
