@@ -16,16 +16,14 @@ class LoginBox extends UiBox {
   final ButtonElement _loginButton   = querySelector('#login-submit');
   final AnchorElement _registerLink  = querySelector('#register-switch');
 
-  final FlashBox _flash;
-  final ServerProxy _server;
+  final FlashBox flash;
+  final ServerProxy server;
 
   Transition startGameTransition;
   Transition switchToRegistrationTransition;
 
-  LoginBox(final ServerProxy server, final PlayerLocalStore playerStore, final FlashBox flash)
-      : super('#login-box'),
-        _server = server,
-        _flash = flash {
+  LoginBox(ServerProxy this.server, final PlayerLocalStore playerStore, FlashBox this.flash)
+      : super('#login-box') {
 
     _registerLink.onClick.listen((event) {
       event.preventDefault();
@@ -48,15 +46,15 @@ class LoginBox extends UiBox {
 
           playerStore.savePlayerInLocalStorage(player)
             .then((_) {
-              _flash.info("Välkommen tillbaka, ${player.handle}!");
+              flash.info("Välkommen tillbaka, ${player.handle}!");
               startGameTransition();
             })
             .catchError((e) {
-              _flash.error("Välkommen tillbaka, ${player.handle}! (Det gick inte att spara användarinformation lokalt på din enhet)");
+              flash.error("Välkommen tillbaka, ${player.handle}! (Det gick inte att spara användarinformation lokalt på din enhet)");
               startGameTransition();
             });
       })
-      .catchError((e) => _flash.error(e.toString()));
+      .catchError((e) => flash.error(e.toString()));
     });
   }
 }

@@ -10,10 +10,9 @@ import 'player.dart';
 import 'protocolconstants.dart';
 
 class ServerProxy {
-  final WebSocket _socket;
+  final WebSocket socket;
 
-  ServerProxy(final WebSocket socket)
-                : _socket = socket;
+  ServerProxy(WebSocket this.socket);
 
   Future<bool> registerPlayer(final Player player) {
     return _serverMessage(REQUEST_REGISTRATION, player.values(), (int response, Map data, Completer completer) {
@@ -79,7 +78,7 @@ class ServerProxy {
 
      _sendServerMessage(message, data);
      final Completer completer = new Completer();
-     final StreamSubscription subscription = _socket.onMessage.listen(null);
+     final StreamSubscription subscription = socket.onMessage.listen(null);
 
      subscription.onData((event) {
        final Map data = JSON.decode(event.data);
@@ -106,6 +105,6 @@ class ServerProxy {
     };
 
     final String json = JSON.encode(messageMap);
-    _socket.send(json);
+    socket.send(json);
   }
 }

@@ -11,11 +11,7 @@ class Player {
   final String email;
   final String password;
 
-  Player(final int id, final String handle, final String email, final String password)
-  : this.id = id,
-    this.handle = handle,
-    this.email = email,
-    this.password = password;
+  Player(int this.id, String this.handle, String this.email, String this.password);
 
   Player.fromValues(final Map values)
       : id = values[ID_KEY],

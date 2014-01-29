@@ -9,6 +9,7 @@ abstract class UiBox {
 
   UiBox(final String id)
       : div = querySelector(id) {
+
         window.onResize.listen((_) => onWindowResize());
         div.onClick.listen((_) => onClick());
       }

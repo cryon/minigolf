@@ -17,16 +17,14 @@ class RegisterBox extends UiBox {
   final ButtonElement _registerButton = querySelector('#register-submit');
   final AnchorElement _loginLink      = querySelector('#login-switch');
 
-  final FlashBox _flash;
-  final ServerProxy _server;
+  final FlashBox flash;
+  final ServerProxy server;
 
   Transition startGameTransition;
   Transition switchToLoginTransition;
 
-  RegisterBox(final ServerProxy server, final PlayerLocalStore playerStore, final FlashBox flash)
-      : super('#register-box'),
-        _server = server,
-        _flash = flash {
+  RegisterBox(ServerProxy this.server, final PlayerLocalStore playerStore, FlashBox this.flash)
+      : super('#register-box') {
 
     _loginLink.onClick.listen((event) {
       event.preventDefault();
@@ -44,11 +42,11 @@ class RegisterBox extends UiBox {
         .then((_){
           playerStore.savePlayerInLocalStorage(player)
             .then((_) {
-              _flash.info("Du är nu registrerad och kan börja spela!");
+              flash.info("Du är nu registrerad och kan börja spela!");
               startGameTransition();
             })
             .catchError((e) {
-              _flash.error("Du är nu registrerad, men din användarinformation kunde inte sparas på din enhet. Du måste logga in manuellt om du vill spela igen.");
+              flash.error("Du är nu registrerad, men din användarinformation kunde inte sparas på din enhet. Du måste logga in manuellt om du vill spela igen.");
               startGameTransition();
             });
       })
