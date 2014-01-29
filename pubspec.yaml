@@ -1,0 +1,13 @@
+name: Minigolf
+version: 1.0.0
+author: John Olsson <john@cryon.se>
+description: A simple game made for demonstration purposes.
+dependencies:
+  browser: any
+  css_animation: any
+  dbcrypt: any
+  http_server: any
+  lawndart: any
+  logging: any
+  postgresql: any
+  route: any

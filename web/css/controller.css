@@ -1,0 +1,13 @@
+#controller-canvas {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    z-index: -1;
+}
+
+#log-out {
+    z-index: 900;
+    position: absolute;
+    top: 4px; 
+    right: 4px;
+}

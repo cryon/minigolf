@@ -1,0 +1,57 @@
+#register-box h2,
+#login-box h2 {
+    color: white;
+    text-shadow: 0px 2px 3px #666;
+}
+
+#register-box,
+#login-box {
+    margin: 5px;
+}
+
+#register-form input,
+#login-form input {
+    border:1px solid #aaa;
+    box-shadow: 0px 0px 3px #ccc, 0 10px 15px #eee inset;
+    border-radius: 4px;
+    line-height: 40px;
+    font-size: 17px;
+    width: 99%;
+}
+
+#register-form input:focus,
+#login-form input:focus {
+    background: #fff;
+    border:1px solid #555;
+    box-shadow: 0 0 3px #aaa;
+}
+
+#register-submit,
+#login-submit {
+    float: right;
+}
+
+.logo {
+    float: left;
+    padding-right: 10px;
+}
+
+.explain {
+    font-style: italic;
+    font-size: 90%;
+}
+
+.switch {
+    text-align: center;
+    font-size: 90%;
+    font-weight: bold;
+    color: rgba(0, 0, 0, 0.6);
+    clear: both;
+}
+
+label {
+    font-weight: bold;
+}
+
+
+

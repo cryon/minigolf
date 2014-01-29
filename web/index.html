@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>index</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" media="screen" href="css/common.css" />
+    <link rel="stylesheet" media="screen" href="css/form.css" />
+    <link rel="stylesheet" media="screen" href="css/flash.css" />
+    <link rel="stylesheet" media="screen" href="css/controller.css" />
+    <link rel="stylesheet" media="screen" href="css/score.css" />
+            
+    <meta name="viewport" content="width=device-width, initial-scale=1.0 ,user-scalable=no" />
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+</head>
+<body>
+
+<!-- FlashBox -->
+<div id="flash" class="uibox">
+    &nbsp;
+</div>
+
+<!-- RegisterBox -->
+<div id="register-box" class="uibox">    
+    <img class="logo" src="img/ball-75.png" width="100" height="101" alt="Putta med Zenon!"/>
+    <h2>Putta med Zenon!</h2>
+
+    <p class="explain">Alla fält är obligatoriska. Vinnare kommer att kontaktas via epost!</p>
+    <p class="switch">Om du redan har en användare: <a id="login-switch" href="#">Logga in!</a></p>
+    
+    <form id="register-form" name="register-form">
+        <p>
+            <label for="register-name">Namn/smeknamn:</label>
+            <input id="register-name" type="text" name="name" placeholder="Ex. Kalle Anka" pattern=".{3,20}" required />
+        </p>
+
+        <p>
+            <label for="register-email" >E-postadress:</label>
+                <input id="register-email" type="email" name="email" placeholder="Ex. kalle@anka.se" required />
+        </p>
+
+        <p>
+            <label for="register-password">Lösenord:</label>
+            <input id="register-password" type="password" name="password" placeholder="Ex. fh#34//F!" pattern=".{3,}" required />
+        </p>
+
+        <p>
+            <button id="register-submit" type="button">Börja spela!</button>
+        </p>
+    </form>
+</div>
+
+<!-- LoginBox -->
+<div id="login-box" class="uibox">    
+    <img class="logo" src="img/ball-75.png" width="100" height="101" alt="Putta med Zenon!"/>
+    <h2>Putta med Zenon!</h2>
+
+    <p class="explain">Logga in med dina användaruppgifter!</p>
+    <p class="switch">Har du ingen användare? <a id="register-switch" href="#">Registrera!</a></p>
+
+    <form id="login-form" name="login-form">
+        <p>
+            <label for="login-email" >E-postadress:</label>
+                <input id="login-email" type="email" name="email" placeholder="Ex. kalle@anka.se" required />
+        </p>
+
+        <p>
+            <label for="login-password">Lösenord:</label>
+            <input id="login-password" type="password" name="password" placeholder="Ex. fh#34//F!" pattern=".{3,}" required />
+        </p>
+
+        <p>
+            <button id="login-submit" type="button">Börja spela!</button>
+        </p>
+    </form>
+</div>
+
+<!-- ScoreBox -->
+<div id="score-box" class="uibox">
+    <h2>Bra jobbat!</h2>    
+    <p>
+        Du ligger just nu på plats <span id="score-position">0</span>!
+    </p>
+    
+    <button id="replay-button">Spela igen!</button>
+</div>
+
+
+<!-- GameController -->
+<div id="controller-box" class="uibox">
+    <button id="log-out">Logga ut!</button>
+
+    <canvas id="controller-canvas">
+        Canvas-elementet stöds inte i din webbläsare.
+    </canvas>
+</div>
+
+<script type="application/dart" src="index.dart"></script>
+<script src="packages/browser/dart.js"></script>
+</body>
+</html>

@@ -1,0 +1,21 @@
+#flash {
+    border: 1px solid;
+    padding: 5px;
+    text-align: center;
+    font-weight: bold;    
+    z-index: 1000;
+    position: absolute;
+    top: 4px;    
+}
+
+.info {
+    background-color: #e6fee4;
+    border-color: #1c8d06;
+    color: #1c8d06;
+}
+
+.error {
+    background-color: #ffe3e3;
+    border-color: #cc1515;
+    color: #cc1515;
+}
