@@ -7,6 +7,9 @@ class Vec2 {
   final num y;
 
   Vec2(num this.x, num this.y);
+  Vec2.fromValues(final Map<String, num> v) : x = v['x'], y = v['y'];
+
+  Map<String, num> get values => {'x' : x, 'y': y};
 
   operator +(final Vec2 o) => new Vec2(x + o.x, y + o.y);
   operator -(final Vec2 o) => new Vec2(x - o.x, y - o.y);
@@ -14,10 +17,5 @@ class Vec2 {
 
   num get magnitude    => sqrt(x * x + y * y);
   Vec2 normalize() => this * (1 / magnitude);
-
-  // for easier serialization
-  Map<String, num> get values => {'x' : x, 'y': y};
-  factory Vec2.fromValues(final Map<String, num> v) => new Vec2(v['x'], v['y']);
-
   num distanceTo(final Vec2 o) => (o - this).magnitude;
 }
