@@ -4,6 +4,9 @@ import 'dart:html';
 
 typedef void Transition();
 
+void nop() {}
+const Transition NOP_TRANSITION = nop;
+
 abstract class UiBox {
   final DivElement div;
 

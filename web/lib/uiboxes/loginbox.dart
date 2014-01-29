@@ -19,8 +19,8 @@ class LoginBox extends UiBox {
   final FlashBox flash;
   final ServerProxy server;
 
-  Transition startGameTransition;
-  Transition switchToRegistrationTransition;
+  Transition startGameTransition = NOP_TRANSITION;
+  Transition switchToRegistrationTransition = NOP_TRANSITION;
 
   LoginBox(final String rootId, ServerProxy this.server, final PlayerLocalStore playerStore, FlashBox this.flash)
       : super(rootId) {

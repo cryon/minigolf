@@ -14,7 +14,8 @@ class GameController extends UiBox {
 
   final ServerProxy server;
   final CanvasElement canvas;
-  CanvasRenderingContext2D context;
+
+  CanvasRenderingContext2D get context => canvas.context2D;
 
   final ButtonElement logoutButton = querySelector('#log-out');
 
@@ -25,14 +26,12 @@ class GameController extends UiBox {
 
   int position = 0;
 
-  Transition gameDoneTransition;
-  Transition logoutTransition;
+  Transition gameDoneTransition = NOP_TRANSITION;
+  Transition logoutTransition = NOP_TRANSITION;
 
   GameController(final String rootId, ServerProxy this.server)
       : canvas = querySelector('#controller-canvas'),
         super(rootId) {
-
-    context = canvas.context2D;
 
     canvas
       ..onTouchStart.listen(onTouchStart)
