@@ -4,6 +4,8 @@ import 'dart:html';
 import 'dart:convert';
 import 'dart:async';
 
+import '../vec2.dart';
+
 import 'player.dart';
 import 'protocolconstants.dart';
 
@@ -55,10 +57,9 @@ class ServerProxy {
     });
   }
 
-  Future<int> shoot(final Point force) {
-    final Map forceMap = {'x' : force.x, 'y' : force.y};
+  Future<int> shoot(final Vec2 v) {
 
-    return _serverMessage(SHOOT, forceMap, (int response, Map data, Completer completer) {
+    return _serverMessage(SHOOT, v.values, (int response, Map data, Completer completer) {
       switch(response) {
         case SHOOT_DONE:
           completer.complete(0);
