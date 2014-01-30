@@ -1,112 +1,60 @@
 library serverproxy;
 
-import 'dart:html';
-import 'dart:convert';
 import 'dart:async';
 
-import '../vec2.dart';
+import 'package:force/force_browser.dart';
 
+import '../vec2.dart';
 import 'player.dart';
 import 'protocolconstants.dart';
 
 typedef void ResponseHandler(final int response, final Map data, final Completer completer);
 
 class ServerProxy {
-  final WebSocket socket;
+  ForceClient fc = new ForceClient();
 
-  ServerProxy(WebSocket this.socket);
-
-  Future registerPlayer(final Player player) {
-    return serverMessage(REQUEST_REGISTRATION, player.values(), (int response, Map data, Completer completer) {
-      switch(response) {
-        case REGISTRATION_OK:
-          completer.complete(true);
-          break;
-        case REGISTRATION_FAILED_EMAIL:
-          completer.completeError('En användare finns redan registrerad med e-postadressen "${player.email}"');
-          break;
-        case REGISTRATION_FAILED_HANDLE:
-          completer.completeError('En användare finns redan registrerad med användarnamnet "${player.handle}"');
-          break;
-        case REGISTRATION_FAILED_UNKNOWN:
-          completer.completeError("Ett okänt fel inträffade vid registrering.");
-          break;
-      }
-    });
+  ServerProxy() {
+   fc.connect();
   }
 
-  Future<Player> login(final Player partialPlayer) {
-    return serverMessage(REQUEST_LOGIN, partialPlayer.values(), (int response, Map data, Completer completer) {
-      switch(response) {
-        case LOGIN_OK:
-          completer.complete(new Player.fromValues(data));
-          break;
-        case LOGIN_FAILED:
-          completer.completeError("Inloggningen mysslyckades. Dubbelkolla att du skrev rätt epost och lösenord!");
-          break;
-      }
-    });
+  Future register(final Player p) {
+    var c = new Completer();
+
+    fc.on(REGISTRATION_OK, (e, s) => c.complete());
+    fc.on(REGISTRATION_FAILED_EMAIL, (e, s) => c.completeError('En användare finns redan registrerad med e-postadressen "${p.email}"'));
+    fc.on(REGISTRATION_FAILED_HANDLE, (e, s) => c.completeError('En användare finns redan registrerad med användarnamnet "${p.handle}"'));
+    fc.on(REGISTRATION_FAILED_UNKNOWN, (e, s) => c.completeError('Ett okänt fel inträffade vid registrering.'));
+    fc.send(REQUEST_REGISTRATION, p.values);
+
+    return c.future;
   }
 
-  Future<bool> logout() {
-    return serverMessage(REQUEST_LOGOUT, null, (int response, Map data, Completer completer) {
-      switch(response) {
-        case LOGOUT_OK:
-          completer.complete(true);
-          break;
-      }
-    });
+  Future<Player> login(final Player partial) {
+    var c = new Completer();
+
+    fc.on(LOGIN_OK, (e, s) => c.complete(new Player.fromValues(e.json)));
+    fc.on(LOGIN_FAILED, (e, s) => c.completeError('Inloggningen mysslyckades. Dubbelkolla att du skrev rätt epost och lösenord!'));
+    fc.send(REQUEST_LOGIN, partial.values);
+
+    return c.future;
+  }
+
+  Future logout() {
+    var c = new Completer();
+
+    fc.send(REQUEST_LOGOUT, {});
+    c.complete();
+
+    return c.future;
   }
 
   Future<int> shoot(final Vec2 v) {
+    var c = new Completer();
 
-    return serverMessage(SHOOT, v.values, (int response, Map data, Completer completer) {
-      switch(response) {
-        case SHOOT_DONE:
-          completer.complete(0);
-          break;
-        case GAME_COMPLETE:
-          final int position = data['pos'];
-          completer.complete(position);
-          break;
-      }
-    });
-  }
+    fc.on(SHOOT_DONE, (e, s) => c.complete(0));
+    fc.on(GAME_COMPLETE, (e, s) => c.complete(e.json['pos']));
+    fc.send(SHOOT, v.values);
 
-  Future serverMessage(final int message, Map data, ResponseHandler responseHandler) {
-     if(data == null) {
-       data = {};
-     }
-
-     sendServerMessage(message, data);
-     final Completer completer = new Completer();
-     final StreamSubscription subscription = socket.onMessage.listen(null);
-
-     subscription.onData((event) {
-       final Map data = JSON.decode(event.data);
-       final int message = data['m'];
-
-       Map payload = {};
-       if(data['d'] != null) {
-         payload = data['d'];
-       }
-
-       responseHandler(message, payload, completer);
-       if(completer.isCompleted) {
-          subscription.cancel();
-       }
-     });
-
-     return completer.future;
-  }
-
-  String sendServerMessage(final int message, Map values) {
-    var messageMap = {
-        'm' : message,
-        'd' : values
-    };
-
-    final String json = JSON.encode(messageMap);
-    socket.send(json);
+    return c.future;
   }
 }

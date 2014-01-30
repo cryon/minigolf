@@ -6,6 +6,7 @@ dependencies:
   browser: any
   css_animation: any
   dbcrypt: any
+  force: any
   http_server: any
   lawndart: any
   logging: any

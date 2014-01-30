@@ -14,12 +14,12 @@ class Player {
   Player(int this.id, String this.handle, String this.email, String this.password);
 
   Player.fromValues(final Map values)
-      : id = values[ID_KEY],
-        email = values[EMAIL_KEY],
-        handle = values[HANDLE_KEY],
-        password = values[PASSWORD_KEY];
+      : id       = values[ID_KEY]       != null ? values[ID_KEY]       : -1,
+        email    = values[EMAIL_KEY]    != null ? values[EMAIL_KEY]    : '',
+        handle   = values[HANDLE_KEY]   != null ? values[HANDLE_KEY]   : '',
+        password = values[PASSWORD_KEY] != null ? values[PASSWORD_KEY] : '';
 
-  Map<String, String> values() {
+  Map<String, String> get values {
     return {
       ID_KEY       : id,
       HANDLE_KEY   : handle,

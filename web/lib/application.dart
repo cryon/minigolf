@@ -1,31 +1,28 @@
 library application;
 
-import 'dart:html';
-
 import 'uiboxes/flashbox.dart';
 import 'uiboxes/registerbox.dart';
 import 'uiboxes/loginbox.dart';
 import 'uiboxes/scorebox.dart';
 import 'communication/serverproxy.dart';
 import 'uiboxes/gamecontroller.dart';
-import 'playerlocalstore.dart';
+import 'playerlocaldb.dart';
 
 import 'uiboxes/uibox.dart';
 
 class Application {
-  ServerProxy      server;
   RegisterBox      registrationBox;
   LoginBox         loginBox;
   GameController   controller;
 
-  PlayerLocalStore playerStore = new PlayerLocalStore();
-  FlashBox         flash = new FlashBox('#flash');
-  ScoreBox         scoreBox = new ScoreBox('#score-box');
+  ServerProxy      server      = new ServerProxy();
+  PlayerLocalDb    playerDb    = new PlayerLocalDb();
+  FlashBox         flash       = new FlashBox('#flash');
+  ScoreBox         scoreBox    = new ScoreBox('#score-box');
 
-  Application(final WebSocket socket) {
-    server          = new ServerProxy(socket);
-    registrationBox = new RegisterBox('#register-box', server, playerStore, flash);
-    loginBox        = new LoginBox('#login-box', server, playerStore, flash);
+  Application() {
+    registrationBox = new RegisterBox('#register-box', server, playerDb, flash);
+    loginBox        = new LoginBox('#login-box', server, playerDb, flash);
     controller      = new GameController('#controller-box', server);
   }
 
@@ -33,19 +30,17 @@ class Application {
     _setupTransitions();
 
     // if the player information is stored in local storage, login immediatly!
-    playerStore.getPlayerFromLocalStorage()
+    playerDb.load()
       .then((player) {
         if(player != null) {
           server.login(player)
             .then((_) {
-              flash.info('Välkommen tillbaka ${player.handle}!');
+              flash.info('Välkommen tillbaka, ${player.handle}!');
               controller.show();
             })
             .catchError((e) {
               flash.error("Försökte logga in med informationen sparad i din enhet. Misslyckades!");
-
-              // if the stored information is faulty somehow, purge the local store
-              playerStore.nuke().then((_) => registrationBox.show());
+              playerDb.nuke().then((_) => registrationBox.show());
             });
         } else {
           registrationBox.show();
@@ -95,7 +90,7 @@ class Application {
    controller.logoutTransition = () {
       controller.hide();
 
-      playerStore.nuke().then((_) =>
+      playerDb.nuke().then((_) =>
         server.logout().then((_) =>
           loginBox.show()));
     };

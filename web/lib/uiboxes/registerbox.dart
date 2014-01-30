@@ -5,7 +5,7 @@ import 'dart:html';
 import 'uibox.dart';
 
 import '../communication/serverproxy.dart';
-import '../playerlocalstore.dart';
+import '../playerlocaldb.dart';
 import '../communication/player.dart';
 import '../uiboxes/flashbox.dart';
 
@@ -20,10 +20,10 @@ class RegisterBox extends UiBox {
   final FlashBox flash;
   final ServerProxy server;
 
-  Transition startGameTransition;
-  Transition switchToLoginTransition;
+  Transition startGameTransition = NOP_TRANSITION;
+  Transition switchToLoginTransition = NOP_TRANSITION;
 
-  RegisterBox(final String rootId, ServerProxy this.server, final PlayerLocalStore playerStore, FlashBox this.flash)
+  RegisterBox(final String rootId, ServerProxy this.server, final PlayerLocalDb playerDb, FlashBox this.flash)
       : super(rootId) {
 
     loginLink.onClick.listen((event) {
@@ -38,9 +38,9 @@ class RegisterBox extends UiBox {
       }
 
       final Player player = new Player(0, handleInput.value, emailInput.value, passwordInput.value);
-      server.registerPlayer(player)
+      server.register(player)
         .then((_){
-          playerStore.savePlayerInLocalStorage(player)
+          playerDb.save(player)
             .then((_) {
               flash.info("Du är nu registrerad och kan börja spela!");
               startGameTransition();

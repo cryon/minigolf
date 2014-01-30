@@ -5,7 +5,7 @@ import 'dart:html';
 import 'uibox.dart';
 
 import '../communication/serverproxy.dart';
-import '../playerlocalstore.dart';
+import '../playerlocaldb.dart';
 import '../communication/player.dart';
 import '../uiboxes/flashbox.dart';
 
@@ -22,7 +22,7 @@ class LoginBox extends UiBox {
   Transition startGameTransition = NOP_TRANSITION;
   Transition switchToRegistrationTransition = NOP_TRANSITION;
 
-  LoginBox(final String rootId, ServerProxy this.server, final PlayerLocalStore playerStore, FlashBox this.flash)
+  LoginBox(final String rootId, ServerProxy this.server, final PlayerLocalDb playerDb, FlashBox this.flash)
       : super(rootId) {
 
     registerLink.onClick.listen((event) {
@@ -40,11 +40,11 @@ class LoginBox extends UiBox {
       server.login(partialPlayer)
         .then((p) {
           // save password
-          final Map tmp = p.values();
+          final Map tmp = p.values;
           tmp[Player.PASSWORD_KEY] = partialPlayer.password;
           final Player player = new Player.fromValues(tmp);
 
-          playerStore.savePlayerInLocalStorage(player)
+          playerDb.save(player)
             .then((_) {
               flash.info("Välkommen tillbaka, ${player.handle}!");
               startGameTransition();

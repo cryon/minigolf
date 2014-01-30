@@ -1,4 +1,4 @@
-library playerstore;
+library playerdb;
 
 import 'dart:async';
 
@@ -6,7 +6,7 @@ import 'package:logging/logging.dart';
 import 'package:postgresql/postgresql_pool.dart';
 import 'package:dbcrypt/dbcrypt.dart';
 
-import 'web/lib/communication/player.dart';
+import '../../web/lib/communication/player.dart';
 
 final Logger log = new Logger('PlayerStore');
 
@@ -14,7 +14,7 @@ String hashPassword(final String plainTextPassword) {
   return new DBCrypt().hashpw(plainTextPassword, new DBCrypt().gensalt());
 }
 
-class PlayerStore {
+class PlayerDb {
   static const String _CONNECTION_STRING = 'postgres://minigolf:golf@localhost:5432/minigolf';
 
   static const String _selectAllQuery = 'select id, handle, email, password from minigolf.users';
@@ -24,7 +24,7 @@ class PlayerStore {
 
   var pool = new Pool(_CONNECTION_STRING, min: 2, max: 5);
 
-  PlayerStore() {
+  PlayerDb() {
     pool.start().then((_) {
       log.info('Connection pool started!');
     });
@@ -58,7 +58,7 @@ class PlayerStore {
 
   Future<bool> register(final Player player) {
     return pool.connect().then((conn) {
-      Map playerValues = player.values();
+      Map playerValues = player.values;
       playerValues['password'] = hashPassword(playerValues['password']);
 
       conn.execute(_insertPlayerQuery, playerValues);
